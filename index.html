@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Edit Word (.docx), PowerPoint (.pptx), and PDF files privately in your browser with no server upload required.">
+<meta name="robots" content="index, follow">
+<title>brivatedocs — Free Local DOCX, PPTX & PDF Editor</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style-v2.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#b4531a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="brivatedocs-icon-192.png">
+<link rel="icon" type="image/png" href="brivatedocs-logo.png">
+<meta name="google-site-verification" content="TGNKbgtg_Ol98_OXyYHXiaTj_cUAGlYIU4vQMtUECd4">
+<meta property="og:title" content="brivatedocs — Free Local DOCX, PPTX & PDF Editor">
+<meta property="og:description" content="Edit Word (.docx), PowerPoint (.pptx), and PDF files privately in your browser with no server upload required.">
+<meta property="og:url" content="https://brivatedocs.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brivatedocs.vercel.app/brivatedocs-logo.png">
+</head>
+<body class="v2-body">
+
+<!-- ───────── الصفحة الرئيسية (Bento Studio v2) ───────── -->
+<section id="home" class="view v2-home">
+  <div class="v2-container">
+    <header class="v2-nav">
+      <div class="v2-brand" aria-label="brivatedocs — Basic, Private, Fast">
+        <img class="brand-logo" src="brivatedocs-logo.png" alt="brivatedocs">
+        <span class="brand-copy">
+          <strong class="brand-name">brivatedocs</strong>
+          <span class="brand-tagline">Basic, Private, Fast</span>
+        </span>
+      </div>
+
+      <div class="v2-nav-right">
+        <span class="v2-local-pill">
+          <span class="v2-local-dot" aria-hidden="true"></span>
+          <span data-i18n="localEdit">Local editing</span>
+        </span>
+        <label class="language-picker">
+          <span data-i18n="language">Language</span>
+          <select id="languageSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+          </select>
+        </label>
+        <button class="v2-icon-btn" id="themeToggleHome" title="Light / Dark Mode" aria-label="Toggle Theme">🌙</button>
+      </div>
+    </header>
+
+    <div class="v2-hero">
+      <div class="v2-hero-copy">
+        <h1 data-i18n="حرّر مستنداتك. وخلّها على جهازك.">Edit documents. Keep them yours.</h1>
+        <p class="sub">
+          <span data-i18n="homeSub1">Open or create Word, PowerPoint, and PDF files right in your browser.</span>
+          <span data-i18n="homeSub2">Zero uploads, zero accounts, zero limits.</span>
+        </p>
+      </div>
+      <div class="v2-format-chips" aria-label="Supported formats">
+        <span>.docx</span>
+        <span>.pptx</span>
+        <span>.pdf</span>
+      </div>
+    </div>
+
+    <!-- مدير المسودات والمشاريع الأخيرة (آخر 5 ملفات) -->
+    <div id="draftBanner" class="draft-banner" hidden>
+      <div class="draft-info" style="width:100%;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <b id="draftMsg">Recent Saved Projects:</b>
+        </div>
+        <button class="btn danger" id="bDiscardDraft" style="font-size:.78rem;padding:4px 10px">Clear All</button>
+      </div>
+      <div id="recentDraftsList" class="recent-drafts-list"></div>
+    </div>
+
+    <div class="v2-bento">
+      <!-- منطقة السحب والإفلات الرئيسية -->
+      <div class="v2-card v2-drop-card">
+        <label class="drop v2-drop" id="drop">
+          <span class="v2-drop-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </span>
+          <b data-i18n="dropPrompt">Drag a file here or click to browse</b>
+          <span class="muted" data-i18n="fileTypes">Word (.docx), PowerPoint (.pptx), or PDF (.pdf)</span>
+          <span class="v2-drop-cta" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>.docx / .pptx / .pdf</span>
+          </span>
+        </label>
+      </div>
+
+      <!-- إنشاء عرض أو مستند جديد من الصفر -->
+      <div class="v2-create-stack">
+        <div class="v2-card v2-create-card">
+          <div class="v2-create-top">
+            <div class="v2-create-title-wrap">
+              <span class="v2-mini-ic pptx" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </span>
+              <div>
+                <b data-i18n="➕ إنشاء عرض جديد">Create New Deck</b>
+                <small data-i18n="✨ أو ابدأ من الصفر:">Or start from scratch:</small>
+              </div>
+            </div>
+            <span class="v2-ext-tag">PPTX</span>
+          </div>
+          <div class="v2-create-controls">
+            <select id="newThemeSel" class="bar-select" aria-label="Theme">
+              <option value="light">Classic Theme (White)</option>
+              <option value="dark">Night Theme (Dark)</option>
+              <option value="navy">Formal Theme (Royal Blue)</option>
+              <option value="warm">Warm Theme (Sand)</option>
+              <option value="emerald">Emerald Theme (Forest Green)</option>
+              <option value="royal">Executive Theme (Deep Purple)</option>
+              <option value="terracotta">Studio Theme (Terracotta)</option>
+              <option value="slate">Modern Theme (Cool Slate)</option>
+            </select>
+            <button class="btn pri" id="bNewPptx">Create New Deck</button>
+          </div>
+        </div>
+
+        <div class="v2-card v2-create-card">
+          <div class="v2-create-top">
+            <div class="v2-create-title-wrap">
+              <span class="v2-mini-ic docx" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </span>
+              <div>
+                <b>New Word Doc</b>
+                <small>Or start from scratch:</small>
+              </div>
+            </div>
+            <span class="v2-ext-tag">DOCX</span>
+          </div>
+          <div class="v2-create-controls">
+            <select id="newDocxTplSel" class="bar-select" aria-label="Word Template">
+              <option value="blank">Blank Word Doc</option>
+              <option value="cv">Resume / CV Template</option>
+              <option value="letter">Formal Letter Template</option>
+              <option value="report">Academic Report Template</option>
+              <option value="invoice">Invoice Template</option>
+              <option value="meeting">Meeting Minutes Template</option>
+              <option value="proposal">Project Proposal Template</option>
+              <option value="contract">Service Agreement Template</option>
+              <option value="study">Study Notes Template</option>
+            </select>
+            <button class="btn v2-sec" id="bNewDocx">New Word Doc</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="v2-alert-slot">
+        <div id="homeError" class="alert" hidden></div>
+      </div>
+
+      <!-- أدوات PDF السريعة -->
+      <section class="v2-card v2-tools-card" aria-label="PDF and image tools">
+        <div class="v2-tools-head">
+          <h2 data-i18n="أدوات سريعة">Quick Tools</h2>
+          <p data-i18n="ادمج، قسّم، اضغط، احمِ، قارن المستندات، استخرج الصور، ونظّف البيانات المخفية — كل المعالجة تتم على جهازك.">Merge, split, compress, protect, compare docs, extract images, and clean hidden metadata — all processed locally.</p>
+        </div>
+        <div class="v2-tools-matrix">
+          <button type="button" class="v2-tool-btn" id="bImagesToPdf">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="تحويل الصور إلى PDF">Images → PDF</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bSplitPdf">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="تقسيم PDF">Split PDF</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bCompressPdf">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="🗜 ضغط PDF">Compress PDF</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bProtectPdf">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="🔒 حماية PDF بكلمة مرور">Protect PDF</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bUnlockPdf">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="🔓 فك حماية PDF">Unlock PDF</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bFillPdf">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="📝 تعبئة نموذج PDF">Fill PDF Form</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bCompareDocs">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/><line x1="6" y1="8" x2="7" y2="8"/><line x1="17" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="18" y2="12"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="⚖️ مقارنة مستندين">Compare Docs</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bExtractImages">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/><line x1="12" y1="16" x2="12" y2="21"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="🖼️ استخراج الصور">Extract Images</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bMergePdfsHome">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="📑 دمج PDF">Merge PDFs</span>
+          </button>
+
+          <button type="button" class="v2-tool-btn" id="bCleanMetaHome">
+            <span class="v2-tool-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </span>
+            <span class="v2-tool-label" data-i18n="🛡️ تنظيف البيانات المخفية">Clean Metadata</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- المميزات + طريقة الاستخدام -->
+      <div class="v2-card v2-features-card">
+        <article class="v2-feat">
+          <span class="v2-feat-num">01</span>
+          <b data-i18n="feature1">Private, local editing</b>
+          <small data-i18n="feature1Sub">Your files remain inside the browser and on your device</small>
+        </article>
+        <article class="v2-feat">
+          <span class="v2-feat-num">02</span>
+          <b data-i18n="feature2">Word, PowerPoint & PDF</b>
+          <small data-i18n="feature2Sub">Edit documents, slide decks, and PDF pages locally</small>
+        </article>
+        <article class="v2-feat">
+          <span class="v2-feat-num">03</span>
+          <b data-i18n="feature3">Direct Save & Offline Ready</b>
+          <small data-i18n="feature3Sub">Save directly back to your file and work offline anytime</small>
+        </article>
+      </div>
+
+      <div class="v2-card v2-guide-card">
+        <div>
+          <b data-i18n="quickGuide">How it works</b>
+          <div class="v2-guide-steps" data-i18n="quickGuideSteps">1. Choose or create a file → 2. Edit → 3. Download the new copy</div>
+        </div>
+        <div class="v2-guide-meta" data-i18n="كل شيء يتم داخل متصفحك، ولا يغادر ملفك جهازك.">Everything happens inside your browser, and your file never leaves your device.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- الشريط الأصلي للحقوق والروابط -->
+  <footer class="site-footer">
+    <span class="footer-divider">|</span>
+    <span>Made by <strong>Abukhalaf0x </strong></span>
+    <span class="footer-divider">|</span>
+    <a href="https://abukhalaf0x.vercel.app" target="_blank" rel="noopener noreferrer"><span data-i18n="forContacts">my website</span></a>
+    <span class="footer-divider">|</span>
+    <a href="https://github.com/abukhalaf0x/brivatedocs" target="_blank" rel="noopener noreferrer"><span data-i18n="openSource">Open source on GitHub</span></a>
+    <span class="footer-divider">|</span>
+    <a href="mailto:brivatedocs@gmail.com">✉️ brivatedocs@gmail.com</a>
+    <span class="footer-divider">|</span>
+  </footer>
+</section>
+
+<!-- ───────── صفحة التعديل ───────── -->
+<section id="editor" class="view" hidden>
+  <header class="top">
+    <button class="btn" id="bHome" data-i18n="homeButton">⬅ Home</button>
+    <div class="fname" id="fname"></div>
+    <span class="editor-status" data-i18n="localEdit">Local editing</span>
+    <button class="btn icon-btn" id="themeToggleEditor" title="Light / Dark Mode" aria-label="Toggle Theme">🌙</button>
+    <label class="language-picker compact">
+      <select id="languageSelectEditor" aria-label="Language">
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+      </select>
+    </label>
+    <button class="btn" id="bFind" data-i18n="findReplace">🔎 Find & Replace</button>
+    <button class="btn" id="bUndo" disabled>↩ Undo</button>
+    <button class="btn" id="bRedo" disabled>↪ Redo</button>
+    <button class="btn pri" id="bDown" data-i18n="download">⬇ Download file</button>
+  </header>
+  <div id="app"></div>
+</section>
+
+<!-- ───────── وضع العرض التقديمي (ملء الشاشة) ───────── -->
+<div id="slideshowOverlay" class="ss-overlay" hidden>
+  <div class="ss-stage" id="ssStage"></div>
+  <canvas id="ssPenCanvas" class="ss-pen-canvas" hidden></canvas>
+  <div id="laserDot" class="laser-dot" hidden></div>
+  <div class="ss-hud">
+    <button class="btn" id="ssPrev">◀</button>
+    <span id="ssCounter">1 / 1</span>
+    <button class="btn" id="ssNext">▶</button>
+    <button class="btn" id="ssAutoBtn">⏱ Autoplay</button>
+    <button class="btn" id="ssLaserBtn">🔴 Laser</button>
+    <button class="btn" id="ssPenBtn">✏️ Pen</button>
+    <button class="btn" id="ssClearPenBtn" hidden>🧹 Clear</button>
+    <button class="btn danger" id="ssExit">✕ Exit Show</button>
+  </div>
+</div>
+
+<!-- ───────── قائمة الزر الأيمن المخصصة ───────── -->
+<div id="ctxMenu" class="ctx-menu" hidden></div>
+
+<!-- ───────── نافذة مكتبة الأيقونات الجاهزة ───────── -->
+<div id="iconsPopover" class="icons-popover" hidden></div>
+
+<div id="busy" hidden><div class="spin"></div><p id="busyMsg" data-i18n="working">Working…</p></div>
+<div id="toast" role="status"></div>
+
+<input type="file" id="fileIn" accept=".docx,.pptx,.docm,.pptm,.pdf" hidden>
+<input type="file" id="pdfMergeIn" accept=".pdf" multiple hidden>
+<input type="file" id="imagesToPdfIn" accept="image/*" multiple hidden>
+<input type="file" id="splitPdfIn" accept=".pdf,application/pdf" hidden>
+<input type="file" id="imgIn" accept="image/*" hidden>
+<input type="file" id="batchImgIn" accept="image/*" multiple hidden>
+<input type="file" id="repImgIn" accept="image/*" hidden>
+<input type="file" id="bgImgIn" accept="image/*" hidden>
+<input type="file" id="mediaIn" accept="video/mp4,video/webm,audio/mp3,audio/mpeg,audio/wav" hidden>
+<input type="file" id="pdfImgIn" accept="image/*" hidden>
+
+<noscript><p style="padding:20px" data-i18n="noScript">JavaScript must be enabled for this website to work.</p></noscript>
+<script src="jszip.min.js"></script>
+<script src="pdf.min.js"></script>
+<script src="pdf-lib.min.js"></script>
+<script src="js/core.js"></script>
+<script src="js/ooxml-templates.js"></script>
+<script src="js/pptx-reader.js"></script>
+<script src="js/pptx-ops.js"></script>
+<script src="js/pptx-editor.js"></script>
+<script src="js/pptx-slideshow.js"></script>
+<script src="js/docx-editor.js"></script>
+<script src="js/app-shell.js"></script>
+<script src="js/pdf-editor.js"></script>
+<script src="js/image-to-pdf.js"></script>
+<script src="js/pdf-split.js"></script>
+<script src="js/pdf-tools.js"></script>
+<script src="js/phase1-features.js"></script>
+<script src="js/phase2-tools.js"></script>
+<script src="js/pwa.js"></script>
+<script src="js/v2-ui.js"></script>
+</body>
+</html>

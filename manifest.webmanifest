@@ -1,0 +1,33 @@
+{
+  "id": "./",
+  "name": "brivatedocs — Document Editor",
+  "short_name": "brivatedocs",
+  "description": "100% private, client-side Word (.docx), PowerPoint (.pptx), and PDF (.pdf) editor with digital signatures, conversion, and offline support.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f2ec",
+  "theme_color": "#b4531a",
+  "icons": [
+    {
+      "src": "brivatedocs-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "brivatedocs-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "./",
+      "accept": {
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx", ".docm"],
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx", ".pptm"],
+        "application/pdf": [".pdf"]
+      }
+    }
+  ]
+}
